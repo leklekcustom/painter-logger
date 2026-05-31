@@ -176,11 +176,11 @@ let orders=[],photos=[null,null,null,null],currentId=null,activeTab='active';
 
 function today(){const d=new Date();return`${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;}
 
-async function loadOrders(){
-  try{const r=await window.storage.get('llc_orders2');orders=r?JSON.parse(r.value):[];}catch(e){orders=[];}
+function loadOrders(){
+  try{const r=localStorage.getItem('llc_orders2');orders=r?JSON.parse(r):[];}catch(e){orders=[];}
   renderHome();
 }
-async function saveOrders(){try{await window.storage.set('llc_orders2',JSON.stringify(orders));}catch(e){}}
+function saveOrders(){try{localStorage.setItem('llc_orders2',JSON.stringify(orders));}catch(e){}}
 
 function renderHome(){
   const list=document.getElementById('order-list');
