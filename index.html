@@ -168,7 +168,7 @@ input[type=file]{display:none}
   <div class="topbar">
     <button class="topbar-back" onclick="goHome()">← กลับ</button>
     <div class="topbar-logo">รายละเอียด</div>
-    <button class="topbar-action" onclick="editOrder()">แก้ไข ✏️</button>
+    <div style="width:48px"></div>
   </div>
   <div class="scroll-body">
     <div id="done-badge-area"></div>
@@ -185,6 +185,7 @@ input[type=file]{display:none}
         style="width:100%;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;font-family:'Sarabun',sans-serif;background:var(--white);color:var(--ink);outline:none;resize:none;line-height:1.6"
         oninput="saveComment()"></textarea>
     </div>
+    <button onclick="editOrder()" style="width:100%;padding:14px;border-radius:12px;border:1px solid var(--border);background:var(--white);color:var(--ink);font-family:'Sarabun',sans-serif;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px">✏️ แก้ไขออเดอร์</button>
     <button class="btn-done" id="btn-done-toggle" onclick="askDoneDate()">✓ งานนี้เสร็จแล้ว</button>
     <button class="btn-eval" id="btn-eval" onclick="showEval(currentId)" style="display:none">📊 ประเมินออเดอร์นี้</button>
   </div>
