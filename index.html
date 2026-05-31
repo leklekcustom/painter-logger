@@ -1,0 +1,367 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif}
+:root{
+  --ink:#1a1a1a;--ink2:#555;--ink3:#999;--border:#e0e0e0;
+  --bg:#f7f6f3;--white:#fff;--accent2:#ff5533;
+  --green:#1a7a4a;--green-bg:#edf7f1;
+  --pill-bg:#f0ede8;--card:#fff;--radius:12px;--shadow:0 1px 3px rgba(0,0,0,0.08);
+}
+.wrap{background:var(--bg);min-height:100vh;padding:1.5rem 1rem}
+.logo{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;color:var(--ink3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1.5rem}
+.logo span{color:var(--accent2)}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:1.25rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+.section-label{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.photo-slot{aspect-ratio:1;border-radius:8px;border:1.5px dashed var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;background:var(--bg);transition:border-color 0.2s}
+.photo-slot:hover{border-color:#aaa}
+.photo-slot img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:6px}
+.photo-slot .plus{font-size:20px;color:var(--ink3)}
+.photo-slot .del-btn{position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.55);color:#fff;font-size:10px;display:none;align-items:center;justify-content:center;cursor:pointer;z-index:2}
+.photo-slot:hover .del-btn{display:flex}
+input[type=file]{display:none}
+.order-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:15px;font-family:'Sarabun',sans-serif;background:var(--white);color:var(--ink);outline:none;transition:border-color 0.2s}
+.order-input:focus{border-color:#aaa}
+.log-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.log-entry{background:var(--bg);border-radius:10px;padding:10px 12px;padding-right:36px;display:flex;flex-direction:column;gap:8px;position:relative}
+.log-entry-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.log-time-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.log-select,.log-text,.log-num{border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:14px;font-family:'Sarabun',sans-serif;background:var(--white);color:var(--ink);outline:none;width:100%;transition:border-color 0.2s}
+.log-select:focus,.log-text:focus,.log-num:focus{border-color:#aaa}
+.log-num{text-align:center}
+.time-unit{font-size:11px;color:var(--ink3);text-align:center;margin-top:3px}
+.del-entry{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:transparent;border:1px solid var(--border);color:var(--ink3);font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1}
+.del-entry:hover{background:#fee;border-color:#fcc;color:#c00}
+.btn-add{width:100%;padding:10px;border:1.5px dashed var(--border);border-radius:10px;background:transparent;font-family:'Sarabun',sans-serif;font-size:14px;color:var(--ink3);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-add:hover{border-color:#aaa;color:var(--ink);background:var(--bg)}
+.btn-save{width:100%;padding:14px;border-radius:10px;background:var(--ink);color:#fff;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:600;border:none;cursor:pointer;transition:all 0.15s;margin-top:4px}
+.btn-save:hover{background:#333}
+.btn-save:active{transform:scale(0.98)}
+.tag{display:inline-flex;align-items:center;background:var(--pill-bg);border-radius:99px;padding:3px 10px;font-size:12px;color:var(--ink2);font-weight:500}
+.summary-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.back-btn{font-size:13px;color:var(--ink3);cursor:pointer;display:flex;align-items:center;gap:4px;border:none;background:none;font-family:'Sarabun',sans-serif}
+.back-btn:hover{color:var(--ink)}
+.summary-order{font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.summary-photos{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:1rem}
+.summary-photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
+.log-row-summary{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:8px}
+.log-row-summary:last-child{border-bottom:none}
+.log-info{flex:1}
+.log-date{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);margin-bottom:2px}
+.log-main{font-size:14px;color:var(--ink)}
+.log-hours{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;color:var(--ink);white-space:nowrap}
+.total-bar{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--ink);border-radius:10px;margin-top:1rem}
+.total-bar span{color:#fff;font-size:14px}
+.total-bar strong{color:#fff;font-size:18px;font-family:'IBM Plex Mono',monospace}
+.saved-list{display:flex;flex-direction:column;gap:8px}
+.saved-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card);border-radius:10px;border:1px solid var(--border);cursor:pointer;transition:border-color 0.2s}
+.saved-item:hover{border-color:#aaa}
+.saved-thumb{width:40px;height:40px;border-radius:6px;background:var(--pill-bg);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:18px}
+.saved-thumb img{width:100%;height:100%;object-fit:cover}
+.saved-name{font-size:14px;font-weight:500;color:var(--ink)}
+.saved-meta{font-size:12px;color:var(--ink3);font-family:'IBM Plex Mono',monospace}
+.nav-tabs{display:flex;margin-bottom:1rem;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--pill-bg)}
+.nav-tab{flex:1;padding:9px;font-size:13px;font-family:'Sarabun',sans-serif;border:none;background:transparent;cursor:pointer;color:var(--ink3);font-weight:500;transition:all 0.15s}
+.nav-tab.active{background:var(--ink);color:#fff}
+.new-order-btn{width:100%;padding:12px;border-radius:10px;background:var(--accent2);color:#fff;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:600;border:none;cursor:pointer;margin-bottom:1rem;transition:all 0.15s}
+.new-order-btn:hover{background:#e04428}
+.empty{text-align:center;padding:2rem;color:var(--ink3);font-size:14px}
+.btn-done{width:100%;padding:13px;border-radius:10px;border:2px solid var(--green);background:transparent;color:var(--green);font-family:'Sarabun',sans-serif;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:all 0.2s}
+.btn-done:hover{background:var(--green-bg)}
+.btn-done.done-active{background:var(--green);color:#fff}
+.done-badge{display:inline-flex;align-items:center;gap:4px;background:var(--green-bg);color:var(--green);border-radius:99px;padding:2px 10px;font-size:12px;font-weight:600;margin-bottom:8px}
+.archived-bar{background:var(--green-bg);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--green);font-weight:500;text-align:center;margin-bottom:8px}
+</style>
+
+<div class="wrap">
+  <div class="logo">Leklek<span>Custom</span> · บันทึกงาน</div>
+
+  <div id="view-home">
+    <button class="new-order-btn" onclick="showForm(null)">+ บันทึกออเดอร์ใหม่</button>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('active')">กำลังทำ</button>
+      <button class="nav-tab" onclick="switchTab('done')">เสร็จแล้ว</button>
+    </div>
+    <div id="order-list"></div>
+  </div>
+
+  <div id="view-form" style="display:none">
+    <button class="back-btn" onclick="goHome()">← กลับ</button><br>
+    <div class="card">
+      <div class="section-label">ชื่อออเดอร์ / ลาย</div>
+      <input class="order-input" id="order-name" placeholder="เช่น กันดั้ม สีน้ำเงิน, Nike Air Max ลายโกยาด...">
+    </div>
+    <div class="card">
+      <div class="section-label">รูปออกแบบ (1–4 รูป)</div>
+      <div class="photo-grid" id="photo-grid">
+        <label class="photo-slot" id="slot-0"><span class="plus">+</span><input type="file" accept="image/*" onchange="addPhoto(this,0)"></label>
+        <label class="photo-slot" id="slot-1" style="display:none"><span class="plus">+</span><input type="file" accept="image/*" onchange="addPhoto(this,1)"></label>
+        <label class="photo-slot" id="slot-2" style="display:none"><span class="plus">+</span><input type="file" accept="image/*" onchange="addPhoto(this,2)"></label>
+        <label class="photo-slot" id="slot-3" style="display:none"><span class="plus">+</span><input type="file" accept="image/*" onchange="addPhoto(this,3)"></label>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-label">บันทึกงานรายวัน</div>
+      <div class="log-list" id="log-list"></div>
+      <button class="btn-add" onclick="addEntry()">+ เพิ่มรายการ</button>
+    </div>
+    <button class="btn-save" onclick="saveOrder()">บันทึก</button>
+  </div>
+
+  <div id="view-detail" style="display:none">
+    <div class="summary-header">
+      <button class="back-btn" onclick="goHome()">← กลับ</button>
+      <button class="back-btn" onclick="editOrder()" style="color:var(--accent2)">แก้ไข ✏️</button>
+    </div>
+    <div class="card">
+      <div id="done-badge-area"></div>
+      <div class="summary-order" id="detail-name"></div>
+      <div class="summary-photos" id="detail-photos"></div>
+      <div id="detail-logs"></div>
+      <div class="total-bar">
+        <span>รวมทั้งหมด</span>
+        <strong id="detail-total">0 ชม. 0 น.</strong>
+      </div>
+      <button class="btn-done" id="btn-done-toggle" onclick="toggleDone()">✓ งานนี้เสร็จแล้ว</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STAFF=['มิกซ์','แยม','ก้อง','เฟิส','เฟอร์'];
+const TASKS=['เพ้นท์','ออกแบบ','พ่นสี','แปะเทป','แปะสตก.','ตัดสตก.','ผสมสี','ถ่ายรูป','ถ่ายวิดีโอ','เคลือบ','ลงข้อมูล','แก้สี','อื่นๆ'];
+let orders=[],photos=[null,null,null,null],currentId=null,activeTab='active';
+
+function today(){const d=new Date();return`${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;}
+
+async function loadOrders(){
+  try{const r=await window.storage.get('llc_orders2');orders=r?JSON.parse(r.value):[];}catch(e){orders=[];}
+  renderHome();
+}
+async function saveOrders(){try{await window.storage.set('llc_orders2',JSON.stringify(orders));}catch(e){}}
+
+function renderHome(){
+  const list=document.getElementById('order-list');
+  const filtered=orders.filter(o=>activeTab==='done'?o.done:!o.done);
+  if(activeTab==='done'&&filtered.length){
+    list.innerHTML=`<div class="archived-bar">เสร็จแล้ว ${filtered.length} ออเดอร์</div><div class="saved-list">${filtered.map(orderCard).join('')}</div>`;
+    return;
+  }
+  list.innerHTML=filtered.length?`<div class="saved-list">${filtered.map(orderCard).join('')}</div>`:`<div class="empty">${activeTab==='done'?'ยังไม่มีออเดอร์ที่เสร็จ':'ยังไม่มีออเดอร์'}</div>`;
+}
+
+function orderCard(o){
+  const totalMin=(o.logs||[]).reduce((s,l)=>s+(parseInt(l.hours)||0)*60+(parseInt(l.mins)||0),0);
+  const h=Math.floor(totalMin/60),m=totalMin%60;
+  const thumb=o.photos&&o.photos[0]?`<img src="${o.photos[0]}">`:'📦';
+  return `<div class="saved-item" onclick="showDetail('${o.id}')">
+    <div class="saved-thumb">${thumb}</div>
+    <div style="flex:1">
+      <div class="saved-name">${o.done?'✓ ':''}${o.name||'ออเดอร์ไม่มีชื่อ'}</div>
+      <div class="saved-meta">${h}ชม. ${m}น. · ${(o.logs||[]).length} รายการ</div>
+    </div>
+  </div>`;
+}
+
+function switchTab(t){
+  activeTab=t;
+  document.querySelectorAll('.nav-tab').forEach((el,i)=>el.classList.toggle('active',['active','done'][i]===t));
+  renderHome();
+}
+
+function showForm(id){
+  currentId=id;photos=[null,null,null,null];
+  document.getElementById('log-list').innerHTML='';
+  document.getElementById('order-name').value='';
+  for(let i=0;i<4;i++){
+    const sl=document.getElementById('slot-'+i);
+    sl.style.display=i===0?'flex':'none';
+    sl.querySelector('img')&&sl.querySelector('img').remove();
+    sl.querySelector('.del-btn')&&sl.querySelector('.del-btn').remove();
+    sl.querySelector('.plus').style.display='';
+  }
+  if(id){
+    const o=orders.find(x=>x.id===id);
+    if(o){
+      document.getElementById('order-name').value=o.name||'';
+      photos=[...(o.photos||[null,null,null,null])];
+      photos.forEach((p,i)=>{if(p)renderPhotoSlot(i,p);});
+      (o.logs||[]).forEach(l=>addEntry(l));
+    }
+  } else {addEntry();}
+  show('form');
+}
+
+function editOrder(){showForm(currentId);}
+
+function addPhoto(input,idx){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{photos[idx]=e.target.result;renderPhotoSlot(idx,e.target.result);};
+  reader.readAsDataURL(file);
+}
+
+function renderPhotoSlot(idx,src){
+  const sl=document.getElementById('slot-'+idx);
+  let img=sl.querySelector('img');
+  if(!img){img=document.createElement('img');sl.appendChild(img);}
+  img.src=src;
+  sl.querySelector('.plus').style.display='none';
+  let del=sl.querySelector('.del-btn');
+  if(!del){
+    del=document.createElement('div');del.className='del-btn';del.innerHTML='×';
+    del.onclick=e=>{e.preventDefault();e.stopPropagation();photos[idx]=null;img.remove();del.remove();sl.querySelector('.plus').style.display='';updateSlots();};
+    sl.appendChild(del);
+  }
+  updateSlots();
+}
+
+function updateSlots(){
+  let next=-1;
+  for(let i=0;i<4;i++){
+    const sl=document.getElementById('slot-'+i);
+    if(!photos[i]&&next===-1)next=i;
+    sl.style.display=(photos[i]||i===next)?'flex':'none';
+  }
+}
+
+function addEntry(data){
+  const list=document.getElementById('log-list');
+  const div=document.createElement('div');div.className='log-entry';
+  const d=data?data.date:today();
+  div.innerHTML=`
+    <button class="del-entry" onclick="this.closest('.log-entry').remove()">×</button>
+    <div class="log-entry-row">
+      <div>
+        <div class="section-label" style="margin-bottom:4px">วันที่</div>
+        <input class="log-text" value="${d}" placeholder="DD/MM/YYYY" style="font-family:'IBM Plex Mono',monospace;font-size:13px">
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:4px">ช่าง</div>
+        <select class="log-select">
+          <option value="">เลือกช่าง</option>
+          ${STAFF.map(s=>`<option ${s===(data&&data.staff)?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="log-entry-row">
+      <div>
+        <div class="section-label" style="margin-bottom:4px">งานที่ทำ</div>
+        <select class="log-select">
+          <option value="">เลือกงาน</option>
+          ${TASKS.map(t=>`<option ${t===(data&&data.task)?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:4px">หมายเหตุ</div>
+        <input class="log-text" value="${data?data.note||'':''}" placeholder="เช่น ข้างขวา">
+      </div>
+    </div>
+    <div class="log-time-row">
+      <div>
+        <div class="section-label" style="margin-bottom:4px">ชั่วโมง</div>
+        <input class="log-num" type="number" min="0" max="24" step="1" value="${data?data.hours||'':''}" placeholder="0">
+        <div class="time-unit">ชม.</div>
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:4px">นาที</div>
+        <input class="log-num" type="number" min="0" max="59" step="5" value="${data?data.mins||'':''}" placeholder="0">
+        <div class="time-unit">น.</div>
+      </div>
+    </div>`;
+  list.appendChild(div);
+}
+
+function getEntries(){
+  return Array.from(document.querySelectorAll('.log-entry')).map(div=>{
+    const ins=div.querySelectorAll('input,select');
+    return {date:ins[0].value,staff:ins[1].value,task:ins[2].value,note:ins[3].value,hours:parseInt(ins[4].value)||0,mins:parseInt(ins[5].value)||0};
+  });
+}
+
+function fmtTime(totalMin){
+  const h=Math.floor(totalMin/60),m=totalMin%60;
+  return h>0&&m>0?`${h} ชม. ${m} น.`:h>0?`${h} ชม.`:`${m} น.`;
+}
+
+const SHEET_URL='https://script.google.com/macros/s/AKfycbz75t1VdwmIIpoYQ6KXr5GwVnSG2AdWp5kW-iQJf7ehl8avqn_5x7m7CB0rF0hLYMl9/exec';
+
+async function syncToSheets(order){
+  try{
+    const payload={
+      order_name: order.name,
+      photos_count: (order.photos||[]).filter(Boolean).length,
+      logs: (order.logs||[]).map(l=>({
+        painter: l.staff||'',
+        work_type: l.task||'',
+        note: l.note||'',
+        hours: l.hours||0,
+        minutes: l.mins||0
+      }))
+    };
+    await fetch(SHEET_URL,{method:'POST',body:JSON.stringify(payload)});
+  }catch(e){console.log('sync error',e);}
+}
+
+function saveOrder(){
+  const name=document.getElementById('order-name').value.trim();
+  if(!name){alert('กรุณาใส่ชื่อออเดอร์');return;}
+  const logs=getEntries();
+  const btn=document.querySelector('.btn-save');
+  btn.textContent='กำลังบันทึก...';btn.disabled=true;
+  if(currentId){
+    const idx=orders.findIndex(x=>x.id===currentId);
+    if(idx>-1)orders[idx]={...orders[idx],name,photos:[...photos],logs};
+    syncToSheets(orders.find(x=>x.id===currentId)).then(()=>{
+      btn.textContent='บันทึก';btn.disabled=false;
+      saveOrders();showDetail(currentId);
+    });
+  } else {
+    orders.unshift({id:'o'+Date.now(),name,photos:[...photos],logs,done:false,created:today()});
+    currentId=orders[0].id;
+    syncToSheets(orders[0]).then(()=>{
+      btn.textContent='บันทึก';btn.disabled=false;
+      saveOrders();showDetail(currentId);
+    });
+  }
+}
+
+function toggleDone(){
+  const o=orders.find(x=>x.id===currentId);if(!o)return;
+  o.done=!o.done;saveOrders();showDetail(currentId);
+}
+
+function showDetail(id){
+  currentId=id;
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  document.getElementById('detail-name').textContent=o.name||'ออเดอร์ไม่มีชื่อ';
+  const dp=document.getElementById('detail-photos');
+  const pics=(o.photos||[]).filter(Boolean);
+  dp.innerHTML=pics.map(p=>`<img src="${p}">`).join('');
+  dp.style.display=pics.length?'grid':'none';
+  document.getElementById('done-badge-area').innerHTML=o.done?'<div class="done-badge">✓ เสร็จแล้ว</div>':'';
+  let totalMin=0;
+  document.getElementById('detail-logs').innerHTML=(o.logs||[]).map(l=>{
+    const m=(parseInt(l.hours)||0)*60+(parseInt(l.mins)||0);
+    totalMin+=m;
+    return `<div class="log-row-summary">
+      <div class="log-info">
+        <div class="log-date">${l.date}</div>
+        <div class="log-main"><span class="tag">${l.staff}</span> ${l.task}${l.note?' · '+l.note:''}</div>
+      </div>
+      <div class="log-hours">${fmtTime(m)}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('detail-total').textContent=fmtTime(totalMin);
+  const btn=document.getElementById('btn-done-toggle');
+  btn.textContent=o.done?'↩ เปิดออเดอร์อีกครั้ง':'✓ งานนี้เสร็จแล้ว';
+  btn.className='btn-done'+(o.done?' done-active':'');
+  show('detail');
+}
+
+function goHome(){show('home');renderHome();}
+function show(v){['home','form','detail'].forEach(x=>document.getElementById('view-'+x).style.display=x===v?'block':'none');}
+loadOrders();
+</script>
