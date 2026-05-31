@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>LeklekCustom · บันทึกงาน</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -14,12 +12,11 @@
   --ink:#1a1a1a;--ink2:#555;--ink3:#999;--border:#e0e0e0;
   --bg:#f7f6f3;--white:#fff;--accent:#ff5533;
   --green:#1a7a4a;--green-bg:#edf7f1;
+  --red:#c0392b;--red-bg:#fdf0ef;
   --pill-bg:#f0ede8;--radius:14px;--shadow:0 1px 4px rgba(0,0,0,0.08);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
 }
 html,body{height:100%;background:var(--bg);font-family:'Sarabun',sans-serif;font-size:16px;color:var(--ink)}
-
-/* Layout */
 .screen{display:none;flex-direction:column;height:100dvh;overflow:hidden}
 .screen.active{display:flex}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;background:var(--bg);flex-shrink:0;border-bottom:1px solid var(--border)}
@@ -28,12 +25,10 @@ html,body{height:100%;background:var(--bg);font-family:'Sarabun',sans-serif;font
 .topbar-action{font-size:14px;font-weight:600;color:var(--accent);background:none;border:none;font-family:'Sarabun',sans-serif;cursor:pointer;padding:4px 0}
 .topbar-back{font-size:15px;color:var(--ink3);background:none;border:none;font-family:'Sarabun',sans-serif;cursor:pointer;display:flex;align-items:center;gap:4px}
 .scroll-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px calc(16px + var(--safe-bottom))}
-
-/* Home */
-.new-btn{width:100%;padding:15px;border-radius:12px;background:var(--accent);color:#fff;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:600;border:none;cursor:pointer;margin-bottom:14px;letter-spacing:0.01em}
-.tabs{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--pill-bg);margin-bottom:14px}
-.tab{flex:1;padding:10px;font-size:14px;font-family:'Sarabun',sans-serif;border:none;background:transparent;cursor:pointer;color:var(--ink3);font-weight:500}
-.tab.active{background:var(--ink);color:#fff}
+.new-btn{width:100%;padding:15px;border-radius:12px;background:var(--accent);color:#fff;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:600;border:none;cursor:pointer;margin-bottom:14px}
+.nav-tabs{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--pill-bg);margin-bottom:14px}
+.nav-tab{flex:1;padding:10px 4px;font-size:13px;font-family:'Sarabun',sans-serif;border:none;background:transparent;cursor:pointer;color:var(--ink3);font-weight:500}
+.nav-tab.active{background:var(--ink);color:#fff}
 .order-list{display:flex;flex-direction:column;gap:10px}
 .order-card{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--white);border-radius:12px;border:1px solid var(--border);cursor:pointer;box-shadow:var(--shadow)}
 .order-thumb{width:48px;height:48px;border-radius:8px;background:var(--pill-bg);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px}
@@ -43,21 +38,15 @@ html,body{height:100%;background:var(--bg);font-family:'Sarabun',sans-serif;font
 .order-meta{font-size:12px;color:var(--ink3);font-family:'IBM Plex Mono',monospace;margin-top:2px}
 .order-arrow{color:var(--ink3);font-size:18px;flex-shrink:0}
 .empty{text-align:center;padding:3rem 1rem;color:var(--ink3);font-size:14px}
-.archived-bar{background:var(--green-bg);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--green);font-weight:500;text-align:center;margin-bottom:10px}
-
-/* Form */
 .field-group{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
 .field-label{font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
 .field-input{width:100%;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:16px;font-family:'Sarabun',sans-serif;background:var(--white);color:var(--ink);outline:none;-webkit-appearance:none}
-.field-input:focus{border-color:#aaa}
 .photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .photo-slot{aspect-ratio:1;border-radius:10px;border:1.5px dashed var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;background:var(--bg)}
 .photo-slot img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:8px}
 .photo-slot .plus{font-size:22px;color:var(--ink3)}
 .photo-slot .del-btn{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.6);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
 input[type=file]{display:none}
-
-/* Log entry */
 .log-entries{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
 .log-entry{background:var(--bg);border-radius:12px;padding:12px;position:relative;border:1px solid var(--border)}
 .log-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
@@ -68,13 +57,9 @@ input[type=file]{display:none}
 .time-unit{font-size:11px;color:var(--ink3);text-align:center;margin-top:4px}
 .del-entry{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;background:transparent;border:1px solid var(--border);color:var(--ink3);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .add-entry-btn{width:100%;padding:12px;border:1.5px dashed var(--border);border-radius:10px;background:transparent;font-family:'Sarabun',sans-serif;font-size:15px;color:var(--ink3);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
-
-/* Save button sticky */
 .save-bar{padding:12px 16px calc(12px + var(--safe-bottom));background:var(--bg);border-top:1px solid var(--border);flex-shrink:0}
 .save-btn{width:100%;padding:16px;border-radius:12px;background:var(--ink);color:#fff;font-family:'Sarabun',sans-serif;font-size:17px;font-weight:600;border:none;cursor:pointer}
 .save-btn:disabled{opacity:0.5}
-
-/* Detail */
 .detail-name{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:12px}
 .detail-photos{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
 .detail-photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
@@ -89,13 +74,43 @@ input[type=file]{display:none}
 .total-bar span{color:#fff;font-size:14px}
 .total-bar strong{color:#fff;font-size:20px;font-family:'IBM Plex Mono',monospace}
 .done-badge{display:inline-flex;align-items:center;gap:4px;background:var(--green-bg);color:var(--green);border-radius:99px;padding:3px 12px;font-size:12px;font-weight:600;margin-bottom:10px}
-.btn-done{width:100%;padding:14px;border-radius:12px;border:2px solid var(--green);background:transparent;color:var(--green);font-family:'Sarabun',sans-serif;font-size:16px;font-weight:600;cursor:pointer}
+.btn-done{width:100%;padding:14px;border-radius:12px;border:2px solid var(--green);background:transparent;color:var(--green);font-family:'Sarabun',sans-serif;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px}
 .btn-done.done-active{background:var(--green);color:#fff}
-
-/* Select arrow */
+.btn-eval{width:100%;padding:14px;border-radius:12px;border:2px solid var(--ink3);background:transparent;color:var(--ink2);font-family:'Sarabun',sans-serif;font-size:16px;font-weight:600;cursor:pointer}
 .select-wrap{position:relative}
 .select-wrap::after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink3);font-size:12px}
 .select-wrap select{padding-right:28px}
+
+/* Eval screen */
+.eval-price-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.price-card{background:var(--white);border-radius:12px;border:1px solid var(--border);padding:14px;text-align:center}
+.price-card-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.price-card-val{font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace}
+.diff-card{border-radius:12px;padding:14px;margin-bottom:12px;text-align:center}
+.diff-card.ok{background:var(--green-bg);border:1px solid #b8dfc9}
+.diff-card.low{background:var(--red-bg);border:1px solid #f5c0bb}
+.diff-label{font-size:12px;font-weight:600;margin-bottom:4px}
+.diff-val{font-size:28px;font-weight:700;font-family:'IBM Plex Mono',monospace}
+.staff-hrs-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.staff-hrs-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:10px;border:1px solid var(--border)}
+.staff-name{font-size:14px;font-weight:500}
+.staff-hrs{font-size:14px;font-family:'IBM Plex Mono',monospace;color:var(--ink2)}
+
+/* Summary screen */
+.month-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.month-nav{background:none;border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:14px;font-family:'Sarabun',sans-serif;color:var(--ink);cursor:pointer}
+.month-title{font-size:16px;font-weight:600;color:var(--ink)}
+.summary-total{background:var(--ink);border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.summary-total span{color:#fff;font-size:14px}
+.summary-total strong{color:#fff;font-size:22px;font-family:'IBM Plex Mono',monospace}
+.staff-summary-card{background:var(--white);border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.staff-summary-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.staff-summary-name{font-size:16px;font-weight:600}
+.staff-summary-hrs{font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--accent)}
+.staff-bar-track{width:100%;height:8px;border-radius:99px;background:var(--pill-bg);overflow:hidden;margin-bottom:8px}
+.staff-bar-fill{height:100%;border-radius:99px;background:var(--accent);transition:width 0.5s ease}
+.staff-summary-meta{font-size:12px;color:var(--ink3)}
+.section-lbl{font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
 </style>
 </head>
 <body>
@@ -107,9 +122,10 @@ input[type=file]{display:none}
   </div>
   <div class="scroll-body">
     <button class="new-btn" onclick="showForm(null)">+ บันทึกออเดอร์ใหม่</button>
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('active')">กำลังทำ</button>
-      <button class="tab" onclick="switchTab('done')">เสร็จแล้ว</button>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('active')">กำลังทำ</button>
+      <button class="nav-tab" onclick="switchTab('done')">เสร็จแล้ว</button>
+      <button class="nav-tab" onclick="showSummary()">สรุปเดือน</button>
     </div>
     <div id="order-list"></div>
   </div>
@@ -163,16 +179,108 @@ input[type=file]{display:none}
       <span>รวมทั้งหมด</span>
       <strong id="detail-total">0 ชม.</strong>
     </div>
-    <button class="btn-done" id="btn-done-toggle" onclick="toggleDone()">✓ งานนี้เสร็จแล้ว</button>
+    <div class="field-group" style="margin-top:4px">
+      <div class="field-label">คอมเม้น / หมายเหตุออเดอร์</div>
+      <textarea id="detail-comment" rows="3" placeholder="เช่น ลูกค้าชอบโทนสีเข้ม, แก้ไขครั้งที่ 2..."
+        style="width:100%;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;font-family:'Sarabun',sans-serif;background:var(--white);color:var(--ink);outline:none;resize:none;line-height:1.6"
+        oninput="saveComment()"></textarea>
+    </div>
+    <button class="btn-done" id="btn-done-toggle" onclick="askDoneDate()">✓ งานนี้เสร็จแล้ว</button>
+    <button class="btn-eval" id="btn-eval" onclick="showEval(currentId)" style="display:none">📊 ประเมินออเดอร์นี้</button>
+  </div>
+</div>
+
+<!-- DONE DATE POPUP -->
+<div id="done-popup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:flex-end;justify-content:center">
+  <div style="background:var(--white);border-radius:20px 20px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px));width:100%;max-width:500px">
+    <div style="font-size:16px;font-weight:600;margin-bottom:16px;color:var(--ink)">วันที่เพ้นท์เสร็จ</div>
+    <input type="date" id="done-date-input"
+      style="width:100%;border:1px solid var(--border);border-radius:10px;padding:14px;font-size:16px;font-family:'Sarabun',sans-serif;background:var(--white);color:var(--ink);outline:none;margin-bottom:14px">
+    <button onclick="confirmDone()" style="width:100%;padding:15px;border-radius:12px;background:var(--green);color:#fff;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:600;border:none;cursor:pointer;margin-bottom:10px">ยืนยัน</button>
+    <button onclick="closeDonePopup()" style="width:100%;padding:13px;border-radius:12px;background:transparent;color:var(--ink3);font-family:'Sarabun',sans-serif;font-size:15px;border:1px solid var(--border);cursor:pointer">ยกเลิก</button>
+  </div>
+</div>
+
+<!-- EVAL -->
+<div class="screen" id="screen-eval">
+  <div class="topbar">
+    <button class="topbar-back" onclick="show('detail')">← กลับ</button>
+    <div class="topbar-logo">ประเมินออเดอร์</div>
+    <div style="width:48px"></div>
+  </div>
+  <div class="scroll-body">
+    <div class="field-group" style="margin-bottom:12px">
+      <div class="field-label">ชื่อออเดอร์</div>
+      <div id="eval-name" style="font-size:16px;font-weight:600;color:var(--ink);padding:4px 0"></div>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">ชั่วโมงรวม (ทุกช่าง)</div>
+      <div id="eval-staff-hrs" class="staff-hrs-list"></div>
+    </div>
+
+    <div class="eval-price-row">
+      <div class="price-card">
+        <div class="price-card-label">ควรคิด</div>
+        <div class="price-card-val" id="eval-should-price" style="color:var(--green)">–</div>
+        <div style="font-size:11px;color:var(--ink3);margin-top:4px">250 ฿/ชม.</div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-label">คิดจริง</div>
+        <input id="eval-actual-price" type="number" inputmode="numeric" placeholder="0"
+          style="width:100%;border:none;outline:none;font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace;text-align:center;background:transparent;color:var(--ink)"
+          oninput="updateDiff()">
+        <div style="font-size:11px;color:var(--ink3);margin-top:4px">บาท</div>
+      </div>
+    </div>
+
+    <div class="diff-card ok" id="diff-card">
+      <div class="diff-label" id="diff-label" style="color:var(--ink3)">กรอกราคาที่คิดจริงด้านบน</div>
+      <div class="diff-val" id="diff-val" style="color:var(--ink3)">–</div>
+    </div>
+
+    <div class="field-group" style="margin-top:4px">
+      <div class="field-label">คอมเม้นงาน</div>
+      <textarea id="eval-comment" rows="3" placeholder="เช่น งานนี้ใช้เวลานานเพราะลายซับซ้อน, ควรคิดเพิ่มครั้งหน้า..."
+        style="width:100%;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;font-family:'Sarabun',sans-serif;background:var(--white);color:var(--ink);outline:none;resize:none;line-height:1.6"></textarea>
+    </div>
+
+    <div class="save-bar" style="padding:0;border:none;margin-top:4px">
+      <button class="save-btn" onclick="saveEval()">บันทึกการประเมิน</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="screen" id="screen-summary">
+  <div class="topbar">
+    <button class="topbar-back" onclick="goHome()">← กลับ</button>
+    <div class="topbar-logo">สรุปรายเดือน</div>
+    <div style="width:48px"></div>
+  </div>
+  <div class="scroll-body">
+    <div style="margin-bottom:14px">
+      <select id="summary-month-select" onchange="onSummarySelect(this.value)"
+        style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:15px;font-weight:500;font-family:'Sarabun',sans-serif;background:var(--white);color:var(--ink);-webkit-appearance:none;appearance:none">
+      </select>
+    </div>
+    <div class="summary-total">
+      <span>ชั่วโมงรวมทีม</span>
+      <strong id="summary-total-hrs">0 ชม.</strong>
+    </div>
+    <div class="section-lbl">ชั่วโมงรายช่าง</div>
+    <div id="staff-summary-list"></div>
   </div>
 </div>
 
 <script>
 const STAFF=['มิกซ์','แยม','ก้อง','เฟิส','เฟอร์'];
 const TASKS=['เพ้นท์','ออกแบบ','พ่นสี','แปะเทป','แปะสตก.','ตัดสตก.','ผสมสี','ถ่ายรูป','ถ่ายวิดีโอ','เคลือบ','ลงข้อมูล','แก้สี','อื่นๆ'];
-const SHEET_URL='https://script.google.com/macros/s/AKfycbz75t1VdwmIIpoYQ6KXr5GwVnSG2AdWp5kW-iQJf7ehl8avqn_5x7m7CB0rF0hLYMl9/exec';
+const RATE=250;
+const MONTHS_TH=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 
-let orders=[],photos=[null,null,null,null],currentId=null,activeTab='active';
+let orders=[],photos=[null,null,null,null],currentId=null,activeTab='active',filterMonth='all';
+let summaryMonth=new Date().getMonth(),summaryYear=new Date().getFullYear();
 
 function today(){const d=new Date();return`${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;}
 
@@ -184,26 +292,65 @@ function saveOrders(){try{localStorage.setItem('llc_orders2',JSON.stringify(orde
 
 function renderHome(){
   const list=document.getElementById('order-list');
-  const filtered=orders.filter(o=>activeTab==='done'?o.done:!o.done);
+  let filtered=orders.filter(o=>activeTab==='done'?o.done:!o.done);
+
+  // สร้าง dropdown options จากเดือนที่มีออเดอร์เสร็จ
+  let filterHtml='';
+  if(activeTab==='done'){
+    const monthSet=new Set();
+    orders.filter(o=>o.done&&o.doneDate).forEach(o=>{
+      const p=o.doneDate.split('/');
+      if(p.length>=3) monthSet.add(`${p[1]}/${p[2]}`);
+    });
+    const monthOpts=[...monthSet].sort((a,b)=>{
+      const [ma,ya]=a.split('/').map(Number);
+      const [mb,yb]=b.split('/').map(Number);
+      return ya!==yb?yb-ya:mb-ma;
+    });
+    if(monthOpts.length>0){
+      const opts=monthOpts.map(m=>{
+        const [mo,yr]=m.split('/').map(Number);
+        return `<option value="${m}" ${filterMonth===m?'selected':''}>${MONTHS_TH[mo-1]} ${yr+543}</option>`;
+      }).join('');
+      filterHtml=`<div style="margin-bottom:12px">
+        <select onchange="setFilterMonth(this.value)"
+          style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'Sarabun',sans-serif;background:var(--white);color:var(--ink);-webkit-appearance:none;appearance:none">
+          <option value="all" ${filterMonth==='all'?'selected':''}>ทุกเดือน</option>
+          ${opts}
+        </select>
+      </div>`;
+    }
+    if(filterMonth!=='all'){
+      filtered=filtered.filter(o=>{
+        if(!o.doneDate)return false;
+        const p=o.doneDate.split('/');
+        return p.length>=3&&`${p[1]}/${p[2]}`===filterMonth;
+      });
+    }
+  }
+
   if(!filtered.length){
-    list.innerHTML=`<div class="empty">${activeTab==='done'?'ยังไม่มีออเดอร์ที่เสร็จ':'ยังไม่มีออเดอร์'}</div>`;
+    list.innerHTML=filterHtml+`<div class="empty">ไม่มีออเดอร์ในเดือนนี้</div>`;
     return;
   }
-  let html='';
-  if(activeTab==='done') html+=`<div class="archived-bar">เสร็จแล้ว ${filtered.length} ออเดอร์</div>`;
-  html+=`<div class="order-list">${filtered.map(orderCard).join('')}</div>`;
-  list.innerHTML=html;
+  list.innerHTML=filterHtml+`<div class="order-list">${filtered.map(orderCard).join('')}</div>`;
+}
+
+function setFilterMonth(val){
+  filterMonth=val;
+  renderHome();
 }
 
 function orderCard(o){
-  const totalMin=(o.logs||[]).reduce((s,l)=>s+(parseInt(l.hours)||0)*60+(parseInt(l.mins)||0),0);
+  const totalMin=(o.logs||[]).reduce((s,l)=>s+(Number(l.hours)||0)*60+(Number(l.mins)||0),0);
   const h=Math.floor(totalMin/60),m=totalMin%60;
-  const timeStr=h>0&&m>0?`${h}ชม. ${m}น.`:h>0?`${h}ชม.`:`${m}น.`;
+  const timeStr=h>0?`${h}ชม.${m>0?' '+m+'น.':''}`:m>0?`${m}น.`:'0ชม.';
   const thumb=o.photos&&o.photos[0]?`<img src="${o.photos[0]}">`:'👟';
+  const evalBadge=o.done&&o.eval?`<span style="font-size:10px;background:${o.eval.diff>=0?'var(--green-bg)':'var(--red-bg)'};color:${o.eval.diff>=0?'var(--green)':'var(--red)'};border-radius:99px;padding:2px 7px;margin-left:4px">${o.eval.diff>=0?'+':''} ${o.eval.diff.toLocaleString()}฿</span>`:'';
   return `<div class="order-card" onclick="showDetail('${o.id}')">
     <div class="order-thumb">${thumb}</div>
     <div class="order-info">
-      <div class="order-name">${o.done?'✓ ':''}${o.name||'ออเดอร์ไม่มีชื่อ'}</div>
+      <div class="order-name">${o.done?'✓ ':''}${o.name||'ออเดอร์ไม่มีชื่อ'}${evalBadge}</div>
       <div class="order-meta">${timeStr} · ${(o.logs||[]).length} รายการ</div>
     </div>
     <div class="order-arrow">›</div>
@@ -212,7 +359,8 @@ function orderCard(o){
 
 function switchTab(t){
   activeTab=t;
-  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['active','done'][i]===t));
+  filterMonth='all';
+  document.querySelectorAll('.nav-tab').forEach((el,i)=>el.classList.toggle('active',['active','done','summary'][i]===t));
   renderHome();
 }
 
@@ -280,46 +428,30 @@ function addEntry(data){
   div.innerHTML=`
     <button class="del-entry" onclick="this.closest('.log-entry').remove()">×</button>
     <div class="log-row" style="padding-right:28px">
-      <div>
-        <div class="log-field-label">วันที่</div>
-        <input class="log-text" value="${d}" placeholder="DD/MM/YYYY" style="font-family:'IBM Plex Mono',monospace;font-size:13px">
-      </div>
-      <div>
-        <div class="log-field-label">ช่าง</div>
-        <div class="select-wrap">
-          <select class="log-select">
-            <option value="">เลือกช่าง</option>
-            ${STAFF.map(s=>`<option ${s===(data&&data.staff)?'selected':''}>${s}</option>`).join('')}
-          </select>
-        </div>
-      </div>
+      <div><div class="log-field-label">วันที่</div>
+        <input class="log-text" value="${d}" placeholder="DD/MM/YYYY" style="font-family:'IBM Plex Mono',monospace;font-size:13px"></div>
+      <div><div class="log-field-label">ช่าง</div>
+        <div class="select-wrap"><select class="log-select">
+          <option value="">เลือกช่าง</option>
+          ${STAFF.map(s=>`<option ${s===(data&&data.staff)?'selected':''}>${s}</option>`).join('')}
+        </select></div></div>
     </div>
     <div class="log-row">
-      <div>
-        <div class="log-field-label">งานที่ทำ</div>
-        <div class="select-wrap">
-          <select class="log-select">
-            <option value="">เลือกงาน</option>
-            ${TASKS.map(t=>`<option ${t===(data&&data.task)?'selected':''}>${t}</option>`).join('')}
-          </select>
-        </div>
-      </div>
-      <div>
-        <div class="log-field-label">หมายเหตุ</div>
-        <input class="log-text" value="${data?data.note||'':''}" placeholder="เช่น ข้างขวา">
-      </div>
+      <div><div class="log-field-label">งานที่ทำ</div>
+        <div class="select-wrap"><select class="log-select">
+          <option value="">เลือกงาน</option>
+          ${TASKS.map(t=>`<option ${t===(data&&data.task)?'selected':''}>${t}</option>`).join('')}
+        </select></div></div>
+      <div><div class="log-field-label">หมายเหตุ</div>
+        <input class="log-text" value="${data?data.note||'':''}" placeholder="เช่น ข้างขวา"></div>
     </div>
     <div class="log-row">
-      <div>
-        <div class="log-field-label">ชั่วโมง</div>
+      <div><div class="log-field-label">ชั่วโมง</div>
         <input class="log-num" type="number" inputmode="numeric" min="0" max="24" value="${data?data.hours||'':''}" placeholder="0">
-        <div class="time-unit">ชม.</div>
-      </div>
-      <div>
-        <div class="log-field-label">นาที</div>
+        <div class="time-unit">ชม.</div></div>
+      <div><div class="log-field-label">นาที</div>
         <input class="log-num" type="number" inputmode="numeric" min="0" max="59" step="5" value="${data?data.mins||'':''}" placeholder="0">
-        <div class="time-unit">น.</div>
-      </div>
+        <div class="time-unit">น.</div></div>
     </div>`;
   list.appendChild(div);
 }
@@ -327,7 +459,7 @@ function addEntry(data){
 function getEntries(){
   return Array.from(document.querySelectorAll('.log-entry')).map(div=>{
     const ins=div.querySelectorAll('input,select');
-    return {date:ins[0].value,staff:ins[1].value,task:ins[2].value,note:ins[3].value,hours:parseInt(ins[4].value)||0,mins:parseInt(ins[5].value)||0};
+    return{date:ins[0].value,staff:ins[1].value,task:ins[2].value,note:ins[3].value,hours:parseInt(ins[4].value)||0,mins:parseInt(ins[5].value)||0};
   });
 }
 
@@ -336,37 +468,45 @@ function fmtTime(totalMin){
   return h>0&&m>0?`${h} ชม. ${m} น.`:h>0?`${h} ชม.`:`${m} น.`;
 }
 
-async function syncToSheets(order){
-  try{
-    const payload={
-      order_name:order.name,
-      photos_count:(order.photos||[]).filter(Boolean).length,
-      logs:(order.logs||[]).map(l=>({painter:l.staff||'',work_type:l.task||'',note:l.note||'',hours:l.hours||0,minutes:l.mins||0}))
-    };
-    await fetch(SHEET_URL,{method:'POST',body:JSON.stringify(payload)});
-  }catch(e){console.log('sync error',e);}
-}
-
 function saveOrder(){
   const name=document.getElementById('order-name').value.trim();
   if(!name){alert('กรุณาใส่ชื่อออเดอร์');return;}
   const logs=getEntries();
-  const btn=document.getElementById('save-btn');
-  btn.textContent='กำลังบันทึก...';btn.disabled=true;
   if(currentId){
     const idx=orders.findIndex(x=>x.id===currentId);
     if(idx>-1)orders[idx]={...orders[idx],name,photos:[...photos],logs};
-    syncToSheets(orders.find(x=>x.id===currentId)).then(()=>{btn.textContent='บันทึก';btn.disabled=false;saveOrders();showDetail(currentId);});
   } else {
     orders.unshift({id:'o'+Date.now(),name,photos:[...photos],logs,done:false,created:today()});
     currentId=orders[0].id;
-    syncToSheets(orders[0]).then(()=>{btn.textContent='บันทึก';btn.disabled=false;saveOrders();showDetail(currentId);});
   }
+  saveOrders();showDetail(currentId);
 }
 
-function toggleDone(){
+function saveComment(){
   const o=orders.find(x=>x.id===currentId);if(!o)return;
-  o.done=!o.done;saveOrders();showDetail(currentId);
+  o.comment=document.getElementById('detail-comment').value;
+  saveOrders();
+}
+
+function askDoneDate(){
+  const o=orders.find(x=>x.id===currentId);if(!o)return;
+  if(o.done){o.done=false;o.doneDate='';saveOrders();showDetail(currentId);return;}
+  const d=new Date();
+  document.getElementById('done-date-input').value=d.toISOString().split('T')[0];
+  document.getElementById('done-popup').style.display='flex';
+}
+
+function confirmDone(){
+  const o=orders.find(x=>x.id===currentId);if(!o)return;
+  const val=document.getElementById('done-date-input').value;
+  if(!val){alert('กรุณาเลือกวันที่');return;}
+  const [yr,mo,dd]=val.split('-');
+  o.done=true;o.doneDate=`${dd}/${mo}/${yr}`;
+  saveOrders();closeDonePopup();showDetail(currentId);
+}
+
+function closeDonePopup(){
+  document.getElementById('done-popup').style.display='none';
 }
 
 function showDetail(id){
@@ -380,8 +520,7 @@ function showDetail(id){
   document.getElementById('done-badge-area').innerHTML=o.done?'<div class="done-badge">✓ เสร็จแล้ว</div>':'';
   let totalMin=0;
   document.getElementById('detail-logs').innerHTML=(o.logs||[]).map(l=>{
-    const m=(parseInt(l.hours)||0)*60+(parseInt(l.mins)||0);
-    totalMin+=m;
+    const m=(Number(l.hours)||0)*60+(Number(l.mins)||0);totalMin+=m;
     return `<div class="log-row-detail">
       <div class="log-info">
         <div class="log-date-txt">${l.date}</div>
@@ -394,7 +533,154 @@ function showDetail(id){
   const btn=document.getElementById('btn-done-toggle');
   btn.textContent=o.done?'↩ เปิดออเดอร์อีกครั้ง':'✓ งานนี้เสร็จแล้ว';
   btn.className='btn-done'+(o.done?' done-active':'');
+  const evalBtn=document.getElementById('btn-eval');
+  evalBtn.style.display=o.done?'block':'none';
   show('detail');
+}
+
+// EVAL
+function showEval(id){
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  document.getElementById('eval-name').textContent=o.name||'';
+
+  // ชั่วโมงแยกรายช่าง
+  const staffMap={};
+  (o.logs||[]).forEach(l=>{
+    if(!l.staff)return;
+    if(!staffMap[l.staff])staffMap[l.staff]=0;
+    staffMap[l.staff]+=(Number(l.hours)||0)*60+(Number(l.mins)||0);
+  });
+  const totalMin=Object.values(staffMap).reduce((s,v)=>s+v,0);
+  const totalHrs=totalMin/60;
+  const shouldPrice=Math.round(totalHrs*RATE);
+
+  document.getElementById('eval-staff-hrs').innerHTML=Object.entries(staffMap).map(([name,min])=>`
+    <div class="staff-hrs-row">
+      <span class="staff-name">${name}</span>
+      <span class="staff-hrs">${fmtTime(min)}</span>
+    </div>`).join('');
+
+  document.getElementById('eval-should-price').textContent=shouldPrice.toLocaleString()+' ฿';
+  document.getElementById('eval-actual-price').value=o.eval?o.eval.actual:'';
+  document.getElementById('eval-comment').value=o.eval?o.eval.comment||'':'';
+  updateDiff();
+  show('eval');
+}
+
+function updateDiff(){
+  const actual=parseInt(document.getElementById('eval-actual-price').value)||0;
+  const shouldText=document.getElementById('eval-should-price').textContent;
+  const should=parseInt(shouldText.replace(/[^0-9]/g,''))||0;
+  if(!actual){
+    document.getElementById('diff-card').className='diff-card ok';
+    document.getElementById('diff-label').style.color='var(--ink3)';
+    document.getElementById('diff-label').textContent='กรอกราคาที่คิดจริงด้านบน';
+    document.getElementById('diff-val').textContent='–';
+    document.getElementById('diff-val').style.color='var(--ink3)';
+    return;
+  }
+  const diff=actual-should;
+  const card=document.getElementById('diff-card');
+  const label=document.getElementById('diff-label');
+  const val=document.getElementById('diff-val');
+  card.className='diff-card '+(diff>=0?'ok':'low');
+  label.style.color=diff>=0?'var(--green)':'var(--red)';
+  label.textContent=diff>=0?'คิดเกิน / โอเค':'คิดต่ำกว่าที่ควร';
+  val.style.color=diff>=0?'var(--green)':'var(--red)';
+  val.textContent=(diff>=0?'+':'')+diff.toLocaleString()+' ฿';
+}
+
+function saveEval(){
+  const o=orders.find(x=>x.id===currentId);if(!o)return;
+  const actual=parseInt(document.getElementById('eval-actual-price').value)||0;
+  const should=parseInt(document.getElementById('eval-should-price').textContent.replace(/[^0-9]/g,''))||0;
+  const evalComment=document.getElementById('eval-comment').value;
+  o.eval={actual,should,diff:actual-should,comment:evalComment};
+  saveOrders();
+  show('detail');
+  showDetail(currentId);
+}
+
+// SUMMARY
+function buildMonthOptions(){
+  // สร้าง options ย้อนหลัง 24 เดือน
+  const sel=document.getElementById('summary-month-select');
+  sel.innerHTML='';
+  const now=new Date();
+  for(let i=0;i<24;i++){
+    let m=now.getMonth()-i, y=now.getFullYear();
+    while(m<0){m+=12;y--;}
+    const opt=document.createElement('option');
+    opt.value=`${m}_${y}`;
+    opt.textContent=`${MONTHS_TH[m]} ${y+543}`;
+    if(m===summaryMonth&&y===summaryYear)opt.selected=true;
+    sel.appendChild(opt);
+  }
+}
+
+function onSummarySelect(val){
+  const [m,y]=val.split('_').map(Number);
+  summaryMonth=m;summaryYear=y;
+  renderSummary();
+}
+
+function showSummary(){
+  summaryMonth=new Date().getMonth();
+  summaryYear=new Date().getFullYear();
+  buildMonthOptions();
+  renderSummary();
+  show('summary');
+}
+
+function renderSummary(){
+  const mo=summaryMonth+1;
+  const yr=summaryYear;
+
+  // กรองออเดอร์ที่มี log ในเดือนนี้
+  const staffMap={};
+  STAFF.forEach(s=>staffMap[s]=0);
+
+  orders.forEach(o=>{
+    (o.logs||[]).forEach(l=>{
+      if(!l.staff||!l.date)return;
+      const parts=l.date.split('/');
+      if(parts.length<3)return;
+      const lmo=parseInt(parts[1]),lyr=parseInt(parts[2]);
+      if(lmo===mo&&lyr===yr){
+        staffMap[l.staff]=(staffMap[l.staff]||0)+(Number(l.hours)||0)*60+(Number(l.mins)||0);
+      }
+    });
+  });
+
+  const entries=Object.entries(staffMap).filter(([,m])=>m>0).sort((a,b)=>b[1]-a[1]);
+  const totalMin=entries.reduce((s,[,m])=>s+m,0);
+  const maxMin=entries.length?entries[0][1]:1;
+
+  document.getElementById('summary-total-hrs').textContent=fmtTime(totalMin);
+
+  if(!entries.length){
+    document.getElementById('staff-summary-list').innerHTML='<div class="empty">ไม่มีข้อมูลในเดือนนี้</div>';
+    return;
+  }
+
+  document.getElementById('staff-summary-list').innerHTML=entries.map(([name,min],i)=>{
+    const pct=Math.round(min/maxMin*100);
+    const orders_count=orders.filter(o=>(o.logs||[]).some(l=>{
+      if(l.staff!==name||!l.date)return false;
+      const p=l.date.split('/');
+      return p.length>=3&&parseInt(p[1])===mo&&parseInt(p[2])===yr;
+    })).length;
+    return `<div class="staff-summary-card">
+      <div class="staff-summary-top">
+        <div>
+          <div class="staff-summary-name">${i===0?'🥇 ':''}${name}</div>
+          <div class="staff-summary-meta">${orders_count} ออเดอร์</div>
+        </div>
+        <div class="staff-summary-hrs">${fmtTime(min)}</div>
+      </div>
+      <div class="staff-bar-track"><div class="staff-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
 }
 
 function goHome(){show('home');renderHome();}
