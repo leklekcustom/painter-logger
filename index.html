@@ -159,7 +159,7 @@ input[type=file]{display:none}
 <script>
 const STAFF=['มิกซ์','แยม','ก้อง','เฟิส','เฟอร์'];
 const TASKS=['เพ้นท์','ออกแบบ','พ่นสี','แปะเทป','แปะสตก.','ตัดสตก.','ผสมสี','ถ่ายรูป','ถ่ายวิดีโอ','เคลือบ','ลงข้อมูล','แก้สี','อื่นๆ'];
-const SHEET_URL='https://script.google.com/macros/s/AKfycbwBDsU5ENMnEDEeMFVSSmH_owfMMtvHohi-ln1PKLOsjVgvfSM3gSk08dheYvYXKikv/exec';
+const SHEET_URL="https://script.google.com/macros/s/AKfycbyhKuFAXJ60m_-d6m995KH8xoJq9bQqLVNifkXG1JOIe2VKGo0MeWt3-XxRBh3HhdRl/exec";
 
 let orders=[],photos=[null,null,null,null],currentId=null,activeTab='active';
 
@@ -338,6 +338,12 @@ function fmtTime(totalMin){
   return h>0&&m>0?`${h} ชม. ${m} น.`:h>0?`${h} ชม.`:`${m} น.`;
 }
 
+async function callSheet(payload){
+  const data=encodeURIComponent(JSON.stringify(payload));
+  const res=await fetch(`${SHEET_URL}?action=save_order&data=${data}`);
+  return res.json();
+}
+
 async function saveOrder(){
   const name=document.getElementById('order-name').value.trim();
   if(!name){alert('กรุณาใส่ชื่อออเดอร์');return;}
@@ -355,11 +361,7 @@ async function saveOrder(){
   }
 
   try{
-    await fetch(SHEET_URL,{
-      method:'POST',
-      body:JSON.stringify({action:'save_order',...order,photos_count:(photos||[]).filter(Boolean).length})
-    });
-    // อัพเดท local
+    await callSheet({...order,photos_count:(photos||[]).filter(Boolean).length});
     const idx=orders.findIndex(x=>x.id===currentId);
     if(idx>-1)orders[idx]=order; else orders.unshift(order);
     showToast('บันทึกแล้ว ✓');
@@ -374,7 +376,7 @@ async function toggleDone(){
   const o=orders.find(x=>x.id===currentId);if(!o)return;
   o.done=!o.done;
   try{
-    await fetch(SHEET_URL,{method:'POST',body:JSON.stringify({action:'save_order',...o,photos_count:(o.photos||[]).filter(Boolean).length})});
+    await callSheet({...o,photos_count:(o.photos||[]).filter(Boolean).length});
     showToast(o.done?'ทำเครื่องหมายเสร็จแล้ว ✓':'เปิดออเดอร์อีกครั้ง');
   }catch(e){showToast('เกิดข้อผิดพลาด');}
   showDetail(currentId);
