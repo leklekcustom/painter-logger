@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>LeklekCustom · บันทึกงาน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -13,9 +15,11 @@
   --bg:#f7f6f3;--white:#fff;--accent:#ff5533;
   --green:#1a7a4a;--green-bg:#edf7f1;
   --pill-bg:#f0ede8;--radius:14px;--shadow:0 1px 4px rgba(0,0,0,0.08);
-  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 html,body{height:100%;background:var(--bg);font-family:'Sarabun',sans-serif;font-size:16px;color:var(--ink)}
+
+/* Layout */
 .screen{display:none;flex-direction:column;height:100dvh;overflow:hidden}
 .screen.active{display:flex}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;background:var(--bg);flex-shrink:0;border-bottom:1px solid var(--border)}
@@ -24,7 +28,9 @@ html,body{height:100%;background:var(--bg);font-family:'Sarabun',sans-serif;font
 .topbar-action{font-size:14px;font-weight:600;color:var(--accent);background:none;border:none;font-family:'Sarabun',sans-serif;cursor:pointer;padding:4px 0}
 .topbar-back{font-size:15px;color:var(--ink3);background:none;border:none;font-family:'Sarabun',sans-serif;cursor:pointer;display:flex;align-items:center;gap:4px}
 .scroll-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px calc(16px + var(--safe-bottom))}
-.new-btn{width:100%;padding:15px;border-radius:12px;background:var(--accent);color:#fff;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:600;border:none;cursor:pointer;margin-bottom:14px}
+
+/* Home */
+.new-btn{width:100%;padding:15px;border-radius:12px;background:var(--accent);color:#fff;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:600;border:none;cursor:pointer;margin-bottom:14px;letter-spacing:0.01em}
 .tabs{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--pill-bg);margin-bottom:14px}
 .tab{flex:1;padding:10px;font-size:14px;font-family:'Sarabun',sans-serif;border:none;background:transparent;cursor:pointer;color:var(--ink3);font-weight:500}
 .tab.active{background:var(--ink);color:#fff}
@@ -38,16 +44,20 @@ html,body{height:100%;background:var(--bg);font-family:'Sarabun',sans-serif;font
 .order-arrow{color:var(--ink3);font-size:18px;flex-shrink:0}
 .empty{text-align:center;padding:3rem 1rem;color:var(--ink3);font-size:14px}
 .archived-bar{background:var(--green-bg);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--green);font-weight:500;text-align:center;margin-bottom:10px}
-.loading{text-align:center;padding:2rem;color:var(--ink3);font-size:14px}
+
+/* Form */
 .field-group{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
 .field-label{font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
 .field-input{width:100%;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:16px;font-family:'Sarabun',sans-serif;background:var(--white);color:var(--ink);outline:none;-webkit-appearance:none}
+.field-input:focus{border-color:#aaa}
 .photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .photo-slot{aspect-ratio:1;border-radius:10px;border:1.5px dashed var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;background:var(--bg)}
 .photo-slot img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:8px}
 .photo-slot .plus{font-size:22px;color:var(--ink3)}
 .photo-slot .del-btn{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.6);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
 input[type=file]{display:none}
+
+/* Log entry */
 .log-entries{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
 .log-entry{background:var(--bg);border-radius:12px;padding:12px;position:relative;border:1px solid var(--border)}
 .log-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
@@ -58,9 +68,13 @@ input[type=file]{display:none}
 .time-unit{font-size:11px;color:var(--ink3);text-align:center;margin-top:4px}
 .del-entry{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;background:transparent;border:1px solid var(--border);color:var(--ink3);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .add-entry-btn{width:100%;padding:12px;border:1.5px dashed var(--border);border-radius:10px;background:transparent;font-family:'Sarabun',sans-serif;font-size:15px;color:var(--ink3);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+
+/* Save button sticky */
 .save-bar{padding:12px 16px calc(12px + var(--safe-bottom));background:var(--bg);border-top:1px solid var(--border);flex-shrink:0}
 .save-btn{width:100%;padding:16px;border-radius:12px;background:var(--ink);color:#fff;font-family:'Sarabun',sans-serif;font-size:17px;font-weight:600;border:none;cursor:pointer}
 .save-btn:disabled{opacity:0.5}
+
+/* Detail */
 .detail-name{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:12px}
 .detail-photos{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
 .detail-photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
@@ -77,22 +91,19 @@ input[type=file]{display:none}
 .done-badge{display:inline-flex;align-items:center;gap:4px;background:var(--green-bg);color:var(--green);border-radius:99px;padding:3px 12px;font-size:12px;font-weight:600;margin-bottom:10px}
 .btn-done{width:100%;padding:14px;border-radius:12px;border:2px solid var(--green);background:transparent;color:var(--green);font-family:'Sarabun',sans-serif;font-size:16px;font-weight:600;cursor:pointer}
 .btn-done.done-active{background:var(--green);color:#fff}
+
+/* Select arrow */
 .select-wrap{position:relative}
 .select-wrap::after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink3);font-size:12px}
 .select-wrap select{padding-right:28px}
-.toast{position:fixed;bottom:calc(20px + var(--safe-bottom));left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:99px;font-size:14px;font-family:'Sarabun',sans-serif;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
-.toast.show{opacity:1}
 </style>
 </head>
 <body>
-
-<div class="toast" id="toast"></div>
 
 <!-- HOME -->
 <div class="screen active" id="screen-home">
   <div class="topbar">
     <div class="topbar-logo">Leklek<span>Custom</span> · บันทึกงาน</div>
-    <button class="topbar-action" onclick="loadOrders()">↻ รีเฟรช</button>
   </div>
   <div class="scroll-body">
     <button class="new-btn" onclick="showForm(null)">+ บันทึกออเดอร์ใหม่</button>
@@ -100,7 +111,7 @@ input[type=file]{display:none}
       <button class="tab active" onclick="switchTab('active')">กำลังทำ</button>
       <button class="tab" onclick="switchTab('done')">เสร็จแล้ว</button>
     </div>
-    <div id="order-list"><div class="loading">กำลังโหลด...</div></div>
+    <div id="order-list"></div>
   </div>
 </div>
 
@@ -159,30 +170,17 @@ input[type=file]{display:none}
 <script>
 const STAFF=['มิกซ์','แยม','ก้อง','เฟิส','เฟอร์'];
 const TASKS=['เพ้นท์','ออกแบบ','พ่นสี','แปะเทป','แปะสตก.','ตัดสตก.','ผสมสี','ถ่ายรูป','ถ่ายวิดีโอ','เคลือบ','ลงข้อมูล','แก้สี','อื่นๆ'];
-const SHEET_URL="https://script.google.com/macros/s/AKfycbyhKuFAXJ60m_-d6m995KH8xoJq9bQqLVNifkXG1JOIe2VKGo0MeWt3-XxRBh3HhdRl/exec";
+const SHEET_URL='https://script.google.com/macros/s/AKfycbz75t1VdwmIIpoYQ6KXr5GwVnSG2AdWp5kW-iQJf7ehl8avqn_5x7m7CB0rF0hLYMl9/exec';
 
 let orders=[],photos=[null,null,null,null],currentId=null,activeTab='active';
 
 function today(){const d=new Date();return`${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;}
 
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-async function loadOrders(){
-  document.getElementById('order-list').innerHTML='<div class="loading">กำลังโหลด...</div>';
-  try{
-    const res=await fetch(SHEET_URL);
-    orders=await res.json();
-  }catch(e){
-    orders=[];
-    document.getElementById('order-list').innerHTML='<div class="empty">โหลดข้อมูลไม่ได้ ลองรีเฟรชใหม่</div>';
-    return;
-  }
+function loadOrders(){
+  try{const r=localStorage.getItem('llc_orders2');orders=r?JSON.parse(r):[];}catch(e){orders=[];}
   renderHome();
 }
+function saveOrders(){try{localStorage.setItem('llc_orders2',JSON.stringify(orders));}catch(e){}}
 
 function renderHome(){
   const list=document.getElementById('order-list');
@@ -198,7 +196,7 @@ function renderHome(){
 }
 
 function orderCard(o){
-  const totalMin=(o.logs||[]).reduce((s,l)=>s+(Number(l.hours)||0)*60+(Number(l.mins)||0),0);
+  const totalMin=(o.logs||[]).reduce((s,l)=>s+(parseInt(l.hours)||0)*60+(parseInt(l.mins)||0),0);
   const h=Math.floor(totalMin/60),m=totalMin%60;
   const timeStr=h>0&&m>0?`${h}ชม. ${m}น.`:h>0?`${h}ชม.`:`${m}น.`;
   const thumb=o.photos&&o.photos[0]?`<img src="${o.photos[0]}">`:'👟';
@@ -329,7 +327,7 @@ function addEntry(data){
 function getEntries(){
   return Array.from(document.querySelectorAll('.log-entry')).map(div=>{
     const ins=div.querySelectorAll('input,select');
-    return{date:ins[0].value,staff:ins[1].value,task:ins[2].value,note:ins[3].value,hours:parseInt(ins[4].value)||0,mins:parseInt(ins[5].value)||0};
+    return {date:ins[0].value,staff:ins[1].value,task:ins[2].value,note:ins[3].value,hours:parseInt(ins[4].value)||0,mins:parseInt(ins[5].value)||0};
   });
 }
 
@@ -338,48 +336,37 @@ function fmtTime(totalMin){
   return h>0&&m>0?`${h} ชม. ${m} น.`:h>0?`${h} ชม.`:`${m} น.`;
 }
 
-async function callSheet(payload){
-  const data=encodeURIComponent(JSON.stringify(payload));
-  const res=await fetch(`${SHEET_URL}?action=save_order&data=${data}`);
-  return res.json();
+async function syncToSheets(order){
+  try{
+    const payload={
+      order_name:order.name,
+      photos_count:(order.photos||[]).filter(Boolean).length,
+      logs:(order.logs||[]).map(l=>({painter:l.staff||'',work_type:l.task||'',note:l.note||'',hours:l.hours||0,minutes:l.mins||0}))
+    };
+    await fetch(SHEET_URL,{method:'POST',body:JSON.stringify(payload)});
+  }catch(e){console.log('sync error',e);}
 }
 
-async function saveOrder(){
+function saveOrder(){
   const name=document.getElementById('order-name').value.trim();
   if(!name){alert('กรุณาใส่ชื่อออเดอร์');return;}
   const logs=getEntries();
   const btn=document.getElementById('save-btn');
   btn.textContent='กำลังบันทึก...';btn.disabled=true;
-
-  let order;
   if(currentId){
-    order=orders.find(x=>x.id===currentId)||{};
-    order={...order,name,photos:[...photos],logs};
-  } else {
-    order={id:'o'+Date.now(),name,photos:[...photos],logs,done:false,created:today()};
-    currentId=order.id;
-  }
-
-  try{
-    await callSheet({...order,photos_count:(photos||[]).filter(Boolean).length});
     const idx=orders.findIndex(x=>x.id===currentId);
-    if(idx>-1)orders[idx]=order; else orders.unshift(order);
-    showToast('บันทึกแล้ว ✓');
-    showDetail(currentId);
-  }catch(e){
-    showToast('เกิดข้อผิดพลาด ลองใหม่');
+    if(idx>-1)orders[idx]={...orders[idx],name,photos:[...photos],logs};
+    syncToSheets(orders.find(x=>x.id===currentId)).then(()=>{btn.textContent='บันทึก';btn.disabled=false;saveOrders();showDetail(currentId);});
+  } else {
+    orders.unshift({id:'o'+Date.now(),name,photos:[...photos],logs,done:false,created:today()});
+    currentId=orders[0].id;
+    syncToSheets(orders[0]).then(()=>{btn.textContent='บันทึก';btn.disabled=false;saveOrders();showDetail(currentId);});
   }
-  btn.textContent='บันทึก';btn.disabled=false;
 }
 
-async function toggleDone(){
+function toggleDone(){
   const o=orders.find(x=>x.id===currentId);if(!o)return;
-  o.done=!o.done;
-  try{
-    await callSheet({...o,photos_count:(o.photos||[]).filter(Boolean).length});
-    showToast(o.done?'ทำเครื่องหมายเสร็จแล้ว ✓':'เปิดออเดอร์อีกครั้ง');
-  }catch(e){showToast('เกิดข้อผิดพลาด');}
-  showDetail(currentId);
+  o.done=!o.done;saveOrders();showDetail(currentId);
 }
 
 function showDetail(id){
@@ -393,7 +380,7 @@ function showDetail(id){
   document.getElementById('done-badge-area').innerHTML=o.done?'<div class="done-badge">✓ เสร็จแล้ว</div>':'';
   let totalMin=0;
   document.getElementById('detail-logs').innerHTML=(o.logs||[]).map(l=>{
-    const m=(Number(l.hours)||0)*60+(Number(l.mins)||0);
+    const m=(parseInt(l.hours)||0)*60+(parseInt(l.mins)||0);
     totalMin+=m;
     return `<div class="log-row-detail">
       <div class="log-info">
