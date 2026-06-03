@@ -280,16 +280,33 @@ const TASKS=['เพ้นท์','ออกแบบ','พ่นสี','แป
 const RATE=250;
 const MONTHS_TH=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 
+const API_URL='http://72.61.113.150:3001';
 let orders=[],photos=[null,null,null,null],currentId=null,activeTab='active',filterMonth='all';
 let summaryMonth=new Date().getMonth(),summaryYear=new Date().getFullYear();
 
 function today(){const d=new Date();return`${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;}
 
-function loadOrders(){
-  try{const r=localStorage.getItem('llc_orders2');orders=r?JSON.parse(r):[];}catch(e){orders=[];}
+async function loadOrders(){
+  document.getElementById('order-list').innerHTML='<div class="empty">กำลังโหลด...</div>';
+  try{
+    const res=await fetch(API_URL+'/orders');
+    orders=await res.json();
+  }catch(e){
+    // ถ้า API ไม่ได้ ใช้ local แทน
+    try{const r=localStorage.getItem('llc_orders2');orders=r?JSON.parse(r):[];}catch(e2){orders=[];}
+  }
   renderHome();
 }
-function saveOrders(){try{localStorage.setItem('llc_orders2',JSON.stringify(orders));}catch(e){}}
+
+async function saveOrders(){
+  try{
+    // บันทึกทุก order ที่มีการเปลี่ยนแปลงขึ้น server
+    const o=orders.find(x=>x.id===currentId);
+    if(o) await fetch(API_URL+'/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)});
+  }catch(e){}
+  // backup ใน local ด้วยเสมอ
+  try{localStorage.setItem('llc_orders2',JSON.stringify(orders));}catch(e){}
+}
 
 function renderHome(){
   const list=document.getElementById('order-list');
@@ -688,7 +705,18 @@ function goHome(){show('home');renderHome();}
 function show(v){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+v).classList.add('active');
+  if(history.state?.screen!==v){
+    history.pushState({screen:v},'',location.pathname);
+  }
 }
+
+// จัดการปุ่ม Back ของ browser
+window.addEventListener('popstate',e=>{
+  const target=e.state?.screen||'home';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+target).classList.add('active');
+  if(target==='home') renderHome();
+});
 
 loadOrders();
 </script>
